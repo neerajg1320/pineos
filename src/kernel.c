@@ -7,9 +7,6 @@ uint16_t* video_mem = 0;
 uint16_t terminal_row = 0;
 uint16_t terminal_col = 0;
 
-// The following is defined in kernel.asm
-extern void problem();
-
 
 uint16_t terminal_make_char(char c, char colour) {
 	return (colour << 8) | c;
@@ -76,6 +73,5 @@ void kernel_main() {
 	// Initialize the Interrupt Descriptor Table
 	idt_init();
 
-	// Force divide by zero
-	problem();
+
  }

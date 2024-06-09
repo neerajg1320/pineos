@@ -1,7 +1,6 @@
 [BITS 32]
 
 global _start
-global problem
 
 extern kernel_main
 
@@ -28,8 +27,5 @@ _start:
 
     jmp $
 
-problem:
-    mov eax, 0
-    div eax  ; We are forcing a divide by zero. Doing it in C may be circumvented by compiler
 
 times 512-($ - $$) db 0
