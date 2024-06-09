@@ -1,10 +1,15 @@
 #include "kernel.h"
 #include <stdint.h>
 #include <stddef.h>
+#include <idt/idt.h>
 
 uint16_t* video_mem = 0;
 uint16_t terminal_row = 0;
 uint16_t terminal_col = 0;
+
+// The following is defined in kernel.asm
+extern void problem();
+
 
 uint16_t terminal_make_char(char c, char colour) {
 	return (colour << 8) | c;
@@ -65,6 +70,12 @@ void kernel_main() {
 	print("\n");
 	print("Hello World!\n");
 
-	// video_mem[0] = terminal_make_char('B', 15);
-	// video_mem[1] = terminal_make_char('C', 15);
+	video_mem[0] = terminal_make_char('G', 15);
+	video_mem[1] = terminal_make_char('H', 15);
+
+	// Initialize the Interrupt Descriptor Table
+	idt_init();
+
+	// Force divide by zero
+	problem();
  }
