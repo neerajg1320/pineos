@@ -1,7 +1,8 @@
 #include "kernel.h"
 #include <stdint.h>
 #include <stddef.h>
-#include <idt/idt.h>
+#include "idt/idt.h"
+#include "memory/heap/kheap.h"
 
 uint16_t* video_mem = 0;
 uint16_t terminal_row = 0;
@@ -70,8 +71,17 @@ void kernel_main() {
 	video_mem[0] = terminal_make_char('G', 15);
 	video_mem[1] = terminal_make_char('H', 15);
 
+	// Initialize the heap
+	kheap_init();
+
+
 	// Initialize the Interrupt Descriptor Table
 	idt_init();
 
+	void* ptr1 = kmalloc(50);
+	void* ptr2 = kmalloc(5000);
 
+	if (ptr1 || ptr2) {
+		print("Pointers allocated!\n");
+	}
  }

@@ -1,6 +1,6 @@
-FILES = ./build/kernel.asm.o ./build/kernel.o ./build/idt/idt.asm.o ./build/idt/idt.o ./build/memory/memory.o
+FILES = ./build/kernel.asm.o ./build/kernel.o ./build/idt/idt.asm.o ./build/idt/idt.o ./build/memory/memory.o ./build/io/io.asm.o ./build/memory/heap/heap.o ./build/memory/heap/kheap.o
 INCLUDES = -I./src
-FLAGS = -ffreestanding -falign-jumps -falign-functions -falign-labels -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp -Wno-unsed-parameter -nostdlib -nostartfiles -nodefaultlibs -Wall -O0 -Iinc
+FLAGS = -g -ffreestanding -falign-jumps -falign-functions -falign-labels -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp -Wno-unsed-parameter -nostdlib -nostartfiles -nodefaultlibs -Wall -O0 -Iinc
 
 PRE := /home/neeraj/opt/cross/bin/
 LD := ${PRE}i686-elf-ld
@@ -35,6 +35,15 @@ all: ./bin/boot.bin ./bin/kernel.bin
 ./build/memory/memory.o: ./src/memory/memory.c
 	${GCC} ${INCLUDES} ${FLAGS} -std=gnu99 -c ./src/memory/memory.c -o ./build/memory/memory.o
 
+./build/io/io.asm.o: ./src/io/io.asm
+	nasm -f elf -g ./src/io/io.asm -o ./build/io/io.asm.o
+
+./build/memory/heap/heap.o: ./src/memory/heap/heap.c
+	${GCC} ${INCLUDES} ${FLAGS} -std=gnu99 -c ./src/memory/heap/heap.c -o ./build/memory/heap/heap.o
+
+./build/memory/heap/kheap.o: ./src/memory/heap/kheap.c
+	${GCC} ${INCLUDES} ${FLAGS} -std=gnu99 -c ./src/memory/heap/kheap.c -o ./build/memory/heap/kheap.o
+
 clean:
 	rm -rf ./bin/boot.bin
 	rm -rf ./bin/kernel.bin
@@ -57,7 +66,7 @@ gdb:
 	${GDB}
 
 run:
-	qemu-system-x86_64 -drive file=./bin/os.bin,format=raw
+	qemu-system-i386 -drive file=./bin/os.bin,format=raw
 
 run-legacy:
 	qemu-system-x86_64 -hda ./bin/os.bin
