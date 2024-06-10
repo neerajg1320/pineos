@@ -35,6 +35,7 @@ _start:
     ; End remap of master PIC
 
     ; Enable interrupts invocation has been moved into a proper place in kernel.c
+    ; We ensure that interrupts are enable only after IDT is initialized.
     ; sti
 
     call kernel_main
