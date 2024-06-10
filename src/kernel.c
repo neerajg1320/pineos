@@ -80,8 +80,14 @@ void kernel_main() {
 
 	void* ptr1 = kmalloc(50);
 	void* ptr2 = kmalloc(5000);
+	void* ptr3 = kmalloc(5600);
+	
+	// free the pointer. Note it is dangling if we don't make ptr1 null.
+	kfree(ptr1);
 
-	if (ptr1 || ptr2) {
+	void* ptr4 = kmalloc(100);
+
+	if (ptr1 || ptr2 || ptr3 || ptr4) {
 		print("Pointers allocated!\n");
 	}
  }
