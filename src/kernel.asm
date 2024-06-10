@@ -34,8 +34,8 @@ _start:
     out 0x20, al ; Tell master PIC
     ; End remap of master PIC
 
-    ; Enable interrupts
-    sti
+    ; Enable interrupts invocation has been moved into a proper place in kernel.c
+    ; sti
 
     call kernel_main
 
