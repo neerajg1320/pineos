@@ -64,9 +64,10 @@ dump:
 
 gdb:
 	${GDB}
+	# target remote | qemu-system-i386 -drive file=./bin/os.bin,format=raw -S -gdb stdio
 
 run:
 	qemu-system-i386 -drive file=./bin/os.bin,format=raw
 
 run-legacy:
-	qemu-system-x86_64 -hda ./bin/os.bin
+	qemu-system-x86_64 -drive file=./bin/os.bin,format=raw

@@ -77,6 +77,8 @@ void kernel_main() {
 
 	// Initialize the Interrupt Descriptor Table
 	idt_init();
+
+	// Enable interrupts after IDT has been initialized
 	enable_interrupts();
 
 	void* ptr1 = kmalloc(50);
