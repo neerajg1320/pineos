@@ -3,6 +3,7 @@
 #include <stddef.h>
 #include "idt/idt.h"
 #include "memory/heap/kheap.h"
+#include "memory/paging/paging.h"
 
 uint16_t* video_mem = 0;
 uint16_t terminal_row = 0;
@@ -58,6 +59,8 @@ void print(const char* str) {
 	}
 }
 
+struct paging_4gb_chunk* kernel_directory = 0;
+
 void kernel_main() {
 	terminal_initialize();
 
@@ -78,6 +81,10 @@ void kernel_main() {
 	// Initialize the Interrupt Descriptor Table
 	idt_init();
 
+	// Setup paging
+	kernel_directory = paging_new_4gb(PAGING_IS_WRITABLE | PAGING_IS_PRESENT | PAGING_ACCESS_FROM_ALL);
+
+
 	// Enable interrupts after IDT has been initialized
 	enable_interrupts();
 
@@ -93,4 +100,7 @@ void kernel_main() {
 	if (ptr1 || ptr2 || ptr3 || ptr4) {
 		print("Pointers allocated!\n");
 	}
+
+
+	
  }
