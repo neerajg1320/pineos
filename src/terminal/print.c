@@ -55,3 +55,15 @@ void print(const char* str) {
 		terminal_writechar(str[i], 15);
 	}
 }
+
+void print_uint(const uint32_t val) {
+    const char int_array[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+
+    for (int i=0; i < sizeof(int_array); i++) {
+        char c = int_array[i];
+        terminal_writechar(c, 15);
+    }
+
+    // uint32_t num = val;
+    // uint8_t size = sizeof(uint32_t) / sizeof(char);
+}
