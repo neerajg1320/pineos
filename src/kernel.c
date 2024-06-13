@@ -75,7 +75,7 @@ void kernel_main() {
 		print("Pointers allocated!\n");
 	}
 
-	print_uint(7865);
-
-	
+	print_uint(2009);
+	print("\n");
+	print_pointer(2009);
  }
