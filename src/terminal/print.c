@@ -1,11 +1,12 @@
 #include <stdint.h>
 #include <stddef.h>
+#include <stdarg.h> // For va_list
 #include "print.h"
 
 uint16_t* video_mem = 0;
 uint16_t terminal_row = 0;
 uint16_t terminal_col = 0;
-
+uint16_t terminal_color = 15;
 
 uint16_t terminal_make_char(char c, char colour) {
 	return (colour << 8) | c;
@@ -52,8 +53,12 @@ size_t strlen(const char* str) {
 void print(const char* str) {
 	size_t len = strlen(str);
 	for (int i=0; i < len; i++) {
-		terminal_writechar(str[i], 15);
+		terminal_writechar(str[i], terminal_color);
 	}
+}
+
+void print_char(const char c) {
+    terminal_writechar(c, terminal_color);
 }
 
 const char hex_array[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
@@ -85,7 +90,7 @@ static void print_base(const uint32_t val, char base, char size) {
 
     // We have to write this in the reverse order
     for (int i = sp - 1; i >= 0; i--) {
-        terminal_writechar(stack[i], 15);
+        terminal_writechar(stack[i], terminal_color);
     }
 }
 
@@ -100,4 +105,26 @@ void print_hex(const uint32_t val) {
 void print_pointer(const void * ptr) {
     print("0x");
     print_base((uint32_t)ptr, 16, 8);
+}
+
+void printf(const char* format, ...) {
+    // Initialize the list pointer
+    va_list ptr;
+    va_start(ptr, format);
+
+    // char* traverse;
+    uint32_t i = 0;
+    const char* s;
+
+    s = format;
+    while(*s != 0) {
+        
+        print_char(*s);
+        i++;
+        s++;
+    }
+    print("\n");
+
+    print("count:");
+    print_uint(i);
 }

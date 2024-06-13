@@ -78,4 +78,7 @@ void kernel_main() {
 	print_uint(2009);
 	print("\n");
 	print_pointer((void*)2009);
+	print("\n");
+
+	printf("Hello %s", "Kernel");
  }
