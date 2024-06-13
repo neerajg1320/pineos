@@ -56,14 +56,34 @@ void print(const char* str) {
 	}
 }
 
-void print_uint(const uint32_t val) {
-    const char int_array[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+const char hex_array[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+#define MAX_DIGITS 32
 
-    for (int i=0; i < sizeof(int_array); i++) {
-        char c = int_array[i];
-        terminal_writechar(c, 15);
-    }
+void print_uint(const uint32_t val) {
+
+    // for (int i=0; i < sizeof(hex_array); i++) {
+    //     char c = hex_array[i];
+    //     terminal_writechar(c, 15);
+    // }
 
     // uint32_t num = val;
     // uint8_t size = sizeof(uint32_t) / sizeof(char);
+
+    char base = 10;
+
+    // We use stack as we have to write the digits in reverse order of their detection
+    char stack[MAX_DIGITS];
+    int sp = 0;
+
+    uint32_t num = val;
+    while (num > 0) {
+        int index = (char)(num % base);
+        num = num / base;
+        stack[sp++] = hex_array[index];
+    }
+
+    // We have to write this in the reverse order
+    for (int i = sp - 1; i >= 0; i--) {
+        terminal_writechar(stack[i], 15);
+    }
 }
