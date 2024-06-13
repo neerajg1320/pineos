@@ -97,7 +97,7 @@ void print_hex(const uint32_t val) {
     print_base(val, 16, 0);
 }
 
-void print_pointer(const uint32_t val) {
+void print_pointer(const void * ptr) {
     print("0x");
-    print_base(val, 16, 8);
+    print_base((uint32_t)ptr, 16, 8);
 }

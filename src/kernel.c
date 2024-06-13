@@ -77,5 +77,5 @@ void kernel_main() {
 
 	print_uint(2009);
 	print("\n");
-	print_pointer(2009);
+	print_pointer((void*)2009);
  }
