@@ -80,5 +80,6 @@ void kernel_main() {
 	print_pointer((void*)2009);
 	print("\n");
 
-	printf("Hello %s", "Kernel");
+	printf("%s. Hello %% and %s, \n", "Kernel");
+	// printf("Hello %%, your friend %s has sent %d messages. %% and %f\n", "Kernel");
  }

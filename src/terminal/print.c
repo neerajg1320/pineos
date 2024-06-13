@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdarg.h> // For va_list
+#include <stdbool.h>
 #include "print.h"
 
 uint16_t* video_mem = 0;
@@ -115,16 +116,34 @@ void printf(const char* format, ...) {
     // char* traverse;
     uint32_t i = 0;
     const char* s;
+    char token_count = 0;
+
+
+    bool token_started = 0;
 
     s = format;
     while(*s != 0) {
-        
+        // print_char(*s);
+        // print_char(*(s+1));
+        // print("\n");
+
+        if (*s == '%') {
+            if (!token_started) {
+                token_started = 1;
+                token_count++;
+            } else {
+                token_started = 0;
+            }
+
+        } 
+
         print_char(*s);
         i++;
         s++;
     }
     print("\n");
 
-    print("count:");
-    print_uint(i);
+    print("token_count:");
+    print_uint(token_count);
+    print("\n");
 }
