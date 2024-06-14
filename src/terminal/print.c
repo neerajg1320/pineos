@@ -110,30 +110,74 @@ void print_pointer(const void * ptr) {
 
 void printf(const char* format, ...) {
     // Initialize the list pointer
-    va_list ptr;
-    va_start(ptr, format);
+    va_list args;
+    va_start(args, format);
 
     char token_count = 0;
+    char no_token = 0;
+
     bool token_started = 0;
+    bool spchar_consumed = 0;
+
+    print(format);
+    print("\n");
 
     const char* p = format;
-    while(*p != 0) {
-        if (*p == '%') {
-            if (!token_started) {
-                token_started = 1;
+    while(*p != '\0') {
+        if (token_started) {
+            switch(*p) {
+                case 'd':
+                print("decimal\n");
                 token_count++;
-            } else {
-                token_started = 0;
-            }
+                break;
 
+                case 's':
+                print("string\n");
+                token_count++;
+                break;
+
+                case 'c':
+                print("char\n");
+                token_count++;
+                break;
+
+                case 'f':
+                print("float\n");
+                token_count++;
+                break;
+
+                case '%':
+                print_char(*p);
+                print_char('\n');
+                no_token++;
+                spchar_consumed = 1;
+                break;
+
+                default:
+                print_char(*p);
+                print(" not supported!\n");
+            }  
+            token_started = 0;          
+        }
+
+        if (*p == '%') {
+            if (!spchar_consumed) {
+                token_started = 1;
+            } else {
+                spchar_consumed = 0;
+            }
         } 
 
-        print_char(*p);
         p++;
     }
+
     print("\n");
 
     print("token_count:");
     print_uint(token_count);
     print("\n");
+    print("no_token:");
+    print_uint(no_token
+    );
+    print("\n");    
 }
