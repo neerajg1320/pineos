@@ -16,6 +16,9 @@ void kernel_main() {
 	// Initialize the heap
 	kheap_init();
 
+	// Search and Initialize disk
+	disk_search_and_init();
+
 	// Initialize the Interrupt Descriptor Table
 	idt_init();
 
