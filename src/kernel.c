@@ -69,7 +69,7 @@ void kernel_main() {
 	print_pointer((void*)2009);
 	print("\n");
 
-	printf("%s. %c and %f Hello %%%d and %s, %m ptr1=%p\n", "Kernel", 'K', 205.7, 42, "Code");
+	printf("%s. %c and %f Hello %%%d and %s, %m ptr1=%p\n", "Kernel", 'K', 205.7, 42, "Code", ptr11);
 
 	printf("ptr11=%p, ptr12=%p, ptr13=%p ptr14=%p", ptr11, ptr12, ptr13, ptr14);
  }

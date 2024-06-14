@@ -125,8 +125,10 @@ void printf(const char* format, ...) {
 
     bool token_started = 0;
 
+#if DEBUG
     print(format);
     print("\n");
+#endif
 
     for (const char* p = format; *p != '\0'; p++) {
         if (!token_started && *p == '%') {
