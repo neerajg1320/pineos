@@ -160,6 +160,13 @@ void printf(const char* format, ...) {
                 print_float(f); 
                 break;
 
+                case 'p':
+                token_count++;
+                void* ptr = va_arg(args, void*);
+                print("0x");
+                print_pointer(ptr);                 
+                break;
+
                 case '%':
                 print_char(*p);
                 no_token++;

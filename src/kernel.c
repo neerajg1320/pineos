@@ -80,6 +80,7 @@ void kernel_main() {
 	print_pointer((void*)2009);
 	print("\n");
 
-	printf("%s. %c and %f Hello %%%d and %s, %m \n", "Kernel", 'K', 205.7, 42, "Code");
+	printf("%s. %c and %f Hello %%%d and %s, %m ptr1=%p\n", "Kernel", 'K', 205.7, 42, "Code");
 	// printf("Hello %%, your friend %s has sent %d messages. %% and %f\n", "Kernel");
+	printf("ptr12=%p, ptr13=%p", ptr12, ptr13);
  }
