@@ -5,8 +5,7 @@
 #include "idt/idt.h"
 #include "memory/heap/kheap.h"
 #include "memory/paging/paging.h"
-
-
+#include "disk/disk.h"
 
 
 struct paging_4gb_chunk* kernel_chunk = 0;
@@ -34,6 +33,12 @@ void kernel_main() {
 
 	// Enable paging to make the following print work properly
 	enable_paging();
+
+	char buf[512];
+	disk_read_sector(0, 1, buf);
+
+	// Info:
+	// Below this part is for testing and it can be removed
 
     char* ptr2 = (char*) 0x1000;
     ptr2[0] = 'C';
