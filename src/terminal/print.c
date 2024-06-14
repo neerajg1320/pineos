@@ -163,7 +163,6 @@ void printf(const char* format, ...) {
                 case '%':
                 print_char(*p);
                 no_token++;
-                token_started = 0;
                 break;
 
                 default:
@@ -171,11 +170,11 @@ void printf(const char* format, ...) {
                 print_char(*p);
                 print("(!error)");
             }  
-            token_started = 0;          
-        } else {
-            print_char(*p);
+            token_started = 0; 
+            continue;        
         }
 
+        print_char(*p);
     }
 
 #if DEBUG
