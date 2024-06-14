@@ -14,19 +14,8 @@ struct paging_4gb_chunk* kernel_chunk = 0;
 void kernel_main() {
 	terminal_initialize();
 
-	// for (int i=0; i < 250; i++) {
-	// 	terminal_writechar('A', 15);
-	// 	terminal_writechar('B', 15);
-	// }
-	// print("\n");
-	// print("Hello World!\n");
-
-	// video_mem[0] = terminal_make_char('G', 15);
-	// video_mem[1] = terminal_make_char('H', 15);
-
 	// Initialize the heap
 	kheap_init();
-
 
 	// Initialize the Interrupt Descriptor Table
 	idt_init();
@@ -81,6 +70,6 @@ void kernel_main() {
 	print("\n");
 
 	printf("%s. %c and %f Hello %%%d and %s, %m ptr1=%p\n", "Kernel", 'K', 205.7, 42, "Code");
-	// printf("Hello %%, your friend %s has sent %d messages. %% and %f\n", "Kernel");
+
 	printf("ptr12=%p, ptr13=%p", ptr12, ptr13);
  }
