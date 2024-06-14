@@ -113,21 +113,12 @@ void printf(const char* format, ...) {
     va_list ptr;
     va_start(ptr, format);
 
-    // char* traverse;
-    uint32_t i = 0;
-    const char* s;
     char token_count = 0;
-
-
     bool token_started = 0;
 
-    s = format;
-    while(*s != 0) {
-        // print_char(*s);
-        // print_char(*(s+1));
-        // print("\n");
-
-        if (*s == '%') {
+    const char* p = format;
+    while(*p != 0) {
+        if (*p == '%') {
             if (!token_started) {
                 token_started = 1;
                 token_count++;
@@ -137,9 +128,8 @@ void printf(const char* format, ...) {
 
         } 
 
-        print_char(*s);
-        i++;
-        s++;
+        print_char(*p);
+        p++;
     }
     print("\n");
 
