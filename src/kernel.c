@@ -71,5 +71,5 @@ void kernel_main() {
 
 	printf("%s. %c and %f Hello %%%d and %s, %m ptr1=%p\n", "Kernel", 'K', 205.7, 42, "Code");
 
-	printf("ptr12=%p, ptr13=%p", ptr12, ptr13);
+	printf("ptr11=%p, ptr12=%p, ptr13=%p ptr14=%p", ptr11, ptr12, ptr13, ptr14);
  }
