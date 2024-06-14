@@ -1,7 +1,7 @@
 #include "heap.h"
 #include "config.h"
 #include "status.h"
-#include "kernel.h"
+#include "terminal/print.h"
 #include "memory/memory.h"
 
 

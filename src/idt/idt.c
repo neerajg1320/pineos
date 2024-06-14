@@ -2,7 +2,7 @@
 #include "idt.h"
 #include "config.h"
 #include "memory/memory.h"
-#include "kernel.h"
+#include "terminal/print.h"
 #include "io/io.h"
 
 struct idt_desc  idt_descriptors[PINEOS_TOTAL_INTERRUPTS];
