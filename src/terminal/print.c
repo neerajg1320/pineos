@@ -178,13 +178,13 @@ void printf(const char* format, ...) {
 
     }
 
+#if DEBUG
     print("\n");
-
     print("token_count:");
     print_uint(token_count);
     print("\n");
     print("no_token:");
-    print_uint(no_token
-    );
-    print("\n");    
+    print_uint(no_token);
+    print("\n");
+#endif    
 }
