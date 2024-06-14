@@ -5,6 +5,7 @@ void terminal_initialize();
 void print(const char* str);
 void print_char(const char str);
 void print_uint(const uint32_t val);
+void print_float(const float val);
 void print_pointer(const void* val);
 void printf(const char* str, ...);
 

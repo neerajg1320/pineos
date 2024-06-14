@@ -99,6 +99,11 @@ void print_uint(const uint32_t val) {
     print_base(val, 10, 0);
 }
 
+void print_float(const float val) {
+    print_base((uint32_t)val, 10, 0);
+    print(".0");
+}
+
 void print_hex(const uint32_t val) {
     print_base(val, 16, 0);
 }
@@ -123,13 +128,11 @@ void printf(const char* format, ...) {
     print(format);
     print("\n");
 
-    
     for (const char* p = format; *p != '\0'; p++) {
         if (!token_started && *p == '%') {
             token_started = 1;
             continue;
         }
-
 
         if (token_started) {
             switch(*p) {
@@ -154,8 +157,7 @@ void printf(const char* format, ...) {
                 case 'f':
                 token_count++;
                 float f = (float)va_arg(args, double);
-                print_uint((uint32_t)f); 
-                print(".0");
+                print_float(f); 
                 break;
 
                 case '%':
