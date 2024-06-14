@@ -127,30 +127,42 @@ void printf(const char* format, ...) {
         if (token_started) {
             switch(*p) {
                 case 'd':
-                print("decimal\n");
+                print("decimal:");
                 token_count++;
+                int i = va_arg(args, int);
+                print_uint(i);
+                print(", ");
                 break;
 
                 case 's':
-                print("string\n");
+                print("string:");
                 token_count++;
+                char* s = va_arg(args, char*);
+                print(s);  
+                print(", ");                  
                 break;
 
                 case 'c':
-                print("char\n");
+                print("char:");
                 token_count++;
+                char c = (char)va_arg(args, int);
+                print_char(c);  
+                print(", ");
                 break;
 
                 case 'f':
-                print("float\n");
+                print("float:");
                 token_count++;
+                float f = (float)va_arg(args, double);
+                print_uint((uint32_t)f);
+                print(", ");   
                 break;
 
                 case '%':
                 print_char(*p);
-                print_char('\n');
                 no_token++;
                 spchar_consumed = 1;
+                print(", ");
                 break;
 
                 default:
