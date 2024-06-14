@@ -108,6 +108,8 @@ void print_pointer(const void * ptr) {
     print_base((uint32_t)ptr, 16, 8);
 }
 
+#define DEBUG 0
+
 void printf(const char* format, ...) {
     // Initialize the list pointer
     va_list args;
@@ -117,70 +119,61 @@ void printf(const char* format, ...) {
     char no_token = 0;
 
     bool token_started = 0;
-    bool spchar_consumed = 0;
 
     print(format);
     print("\n");
 
-    const char* p = format;
-    while(*p != '\0') {
+    
+    for (const char* p = format; *p != '\0'; p++) {
+        if (!token_started && *p == '%') {
+            token_started = 1;
+            continue;
+        }
+
+
         if (token_started) {
             switch(*p) {
                 case 'd':
-                print("decimal:");
                 token_count++;
                 int i = va_arg(args, int);
                 print_uint(i);
-                print(", ");
                 break;
 
                 case 's':
-                print("string:");
                 token_count++;
                 char* s = va_arg(args, char*);
-                print(s);  
-                print(", ");                  
+                print(s);                 
                 break;
 
                 case 'c':
-                print("char:");
                 token_count++;
                 char c = (char)va_arg(args, int);
                 print_char(c);  
-                print(", ");
                 break;
 
                 case 'f':
-                print("float:");
                 token_count++;
                 float f = (float)va_arg(args, double);
-                print_uint((uint32_t)f);
-                print(", ");   
+                print_uint((uint32_t)f); 
+                print(".0");
                 break;
 
                 case '%':
                 print_char(*p);
                 no_token++;
-                spchar_consumed = 1;
-                print(", ");
+                token_started = 0;
                 break;
 
                 default:
+                print_char('%');
                 print_char(*p);
-                print(" not supported!\n");
+                print("(!error)");
             }  
             token_started = 0;          
+        } else {
+            print_char(*p);
         }
 
-        if (*p == '%') {
-            if (!spchar_consumed) {
-                token_started = 1;
-            } else {
-                spchar_consumed = 0;
-            }
-        } 
-
-        p++;
     }
 
     print("\n");
