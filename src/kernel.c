@@ -14,6 +14,9 @@
 #include "config.h"
 #include "memory/memory.h"
 #include "task/tss.h"
+#include "task/task.h"
+#include "task/process.h"
+#include "status.h"
 
 struct paging_4gb_chunk* kernel_chunk = 0;
 
@@ -94,8 +97,19 @@ void kernel_main() {
 
     print(ptr);
 
+	char* program_name = "0:/blank.bin";
+	struct process *process = 0;
+	int res = process_load(program_name, &process);
+	if (res != PINEOS_ALL_OK) {
+		panic("Failed to load");
+	}
+
+	task_run_first_ever_task();
+
 	// Enable interrupts after IDT has been initialized
-	enable_interrupts();
+	// We disable while running our first program
+	// We plan to enable after we execute our first program
+	// enable_interrupts();
 
 
 	// Test Code:
@@ -104,6 +118,10 @@ void kernel_main() {
 	
 	print_char('\n');
 	print("Test Results:\n");
+
+
+	// Loop to stop further execution
+	panic("System halted!");
 
 	char* filename = "0:/hello.txt";
     int fd = fopen(filename, "r");
@@ -125,8 +143,7 @@ void kernel_main() {
 		printf("We could not open '%s'\n", filename);
 	}
 	
-	// Loop to stop further execution
-	panic("System halted!");
+
 
 	struct disk_stream* stream = diskstreamer_new(0);
 	diskstreamer_seek(stream, 0x201);
