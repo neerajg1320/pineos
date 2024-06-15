@@ -72,7 +72,7 @@ all: ./bin/boot.bin ./bin/kernel.bin
 ./build/fs/filesystem.o: ./src/fs/filesystem.c
 	${GCC} ${INCLUDES} ${FLAGS} -std=gnu99 -c ./src/fs/filesystem.c -o ./build/fs/filesystem.o
 
-./build/fs/fat16/fat16.o: ./src/fs/fat/fat16.c
+./build/fs/fat/fat16.o: ./src/fs/fat/fat16.c
 	${GCC} ${INCLUDES} ${FLAGS} -std=gnu99 -c ./src/fs/fat/fat16.c -o ./build/fs/fat/fat16.o
 
 clean:
