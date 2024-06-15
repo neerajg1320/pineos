@@ -6,6 +6,7 @@
 #include "memory/heap/kheap.h"
 #include "memory/paging/paging.h"
 #include "disk/disk.h"
+#include "fs/pparser.h"
 
 
 struct paging_4gb_chunk* kernel_chunk = 0;
@@ -59,6 +60,11 @@ void kernel_main() {
 
 	// Test Code:
 	// Kept here to test the working of the code.
+	struct path_root* root_path = pathparser_parse("0:/bin/shell.exe", NULL);
+	if (root_path) {
+
+	}
+
 	void* ptr11 = kmalloc(50);
 	void* ptr12 = kmalloc(5000);
 	void* ptr13 = kmalloc(5600);
