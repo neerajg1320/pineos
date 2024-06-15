@@ -78,6 +78,14 @@ void kernel_main() {
 		char fbuf1[16];
 		fread(fbuf1, 16, 1, fd);
 		print(fbuf1);
+
+		struct file_stat s;
+		fstat(fd, &s);
+		print_pointer(&s);
+		print_char('\n');
+
+		fclose(fd);
+		printf("Closed file '%s'", filename);
     } else {
 		printf("We could not open '%s'\n", filename);
 	}
