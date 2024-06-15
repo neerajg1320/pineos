@@ -12,6 +12,10 @@ all: ./bin/boot.bin ./bin/kernel.bin
 	dd if=./bin/boot.bin >> ./bin/os.bin
 	dd if=./bin/kernel.bin >> ./bin/os.bin
 	dd if=/dev/zero bs=1048576 count=16 >> ./bin/os.bin 
+	sudo mount -t vfat ./bin/os.bin /mnt/d
+	# Copy a file
+	sudo cp ./assets/hello.txt /mnt/d
+	sudo umount /mnt/d
 	
 ./bin/kernel.bin: $(FILES)
 	${LD} -g -relocatable $(FILES) -o ./build/kernelfull.o
