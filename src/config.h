@@ -15,8 +15,10 @@
 #define PINEOS_SECTOR_SIZE          512
 
 
-#define PINEOS_MAX_PATH               108
-#define PINEOS_TOTAL_GDT_SEGMENTS       6
+#define PINEOS_MAX_PATH                  108
+#define PINEOS_TOTAL_GDT_SEGMENTS          6
+#define PINEOS_MAX_PROGRAM_ALLOCATIONS  1024
+#define PINEOS_MAX_PROCESSES             12
 
 #define PINEOS_PROGRAM_VIRTUAL_ADDRESS              0x400000
 #define PINEOS_USER_PROGRAM_STACK_SIZE              (1024 * 16)

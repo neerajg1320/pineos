@@ -3,6 +3,7 @@
 #include "status.h"
 #include "memory/heap/kheap.h"
 #include "memory/memory.h"
+#include "task/process.h"
 
 // The current task that is running
 struct task* current_task = 0;
@@ -11,7 +12,7 @@ struct task* current_task = 0;
 struct task* task_tail = 0;
 struct task* task_head = 0;
 
-int task_init(struct task* task);
+int task_init(struct task* task, struct process* process);
 
 
 struct task* task_current()
@@ -19,7 +20,7 @@ struct task* task_current()
     return current_task;
 }
 
-struct task* task_new()
+struct task* task_new(struct process* process)
 {
     int res = 0;
     struct task* task = kzalloc(sizeof(struct task));
@@ -29,7 +30,7 @@ struct task* task_new()
         goto out;
     }
 
-    res = task_init(task);
+    res = task_init(task, process);
     if (res != PINEOS_ALL_OK)
     {
         goto out;
@@ -99,7 +100,7 @@ int task_free(struct task* task)
     return 0;
 }
 
-int task_init(struct task* task)
+int task_init(struct task* task, struct process* process)
 {
     memset(task, 0, sizeof(struct task));
     // Map the entire 4GB address space to its self
