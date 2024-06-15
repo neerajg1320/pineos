@@ -13,6 +13,11 @@
 
 struct paging_4gb_chunk* kernel_chunk = 0;
 
+void panic(const char* msg) {
+    print(msg);
+    while(1) {}
+}
+
 void kernel_main() {
 	terminal_initialize();
 
@@ -85,13 +90,13 @@ void kernel_main() {
 		print_char('\n');
 
 		fclose(fd);
-		printf("Closed file '%s'", filename);
+		printf("Closed file '%s'\n", filename);
     } else {
 		printf("We could not open '%s'\n", filename);
 	}
 	
 	// Loop to stop further execution
-	while(1) {}
+	panic("System halted!");
 
 	struct disk_stream* stream = diskstreamer_new(0);
 	diskstreamer_seek(stream, 0x201);
