@@ -16,6 +16,6 @@
 
 
 #define PINEOS_MAX_PATH               108
-#define PINEOS_TOTAL_GDT_SEGMENTS       3
+#define PINEOS_TOTAL_GDT_SEGMENTS       6
 
 #endif /* CONFIG_H */
