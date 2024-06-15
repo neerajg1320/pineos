@@ -2,17 +2,18 @@
 #include "config.h"
 #include "memory/memory.h"
 #include "memory/heap/kheap.h"
+#include "string/string.h"
+#include "disk/disk.h"
+#include "fat/fat16.h"
 #include "status.h"
 #include "kernel.h"
 #include "terminal/print.h"
-#include "fat/fat16.h"
-#include "disk/disk.h"
-#include "string/string.h"
 
 struct filesystem* filesystems[PINEOS_MAX_FILESYSTEMS];
 struct file_descriptor* file_descriptors[PINEOS_MAX_FILE_DESCRIPTORS];
 
-static struct filesystem** fs_get_free_filesystem() {
+static struct filesystem** fs_get_free_filesystem()
+{
     int i = 0;
     for (i = 0; i < PINEOS_MAX_FILESYSTEMS; i++)
     {
@@ -25,7 +26,8 @@ static struct filesystem** fs_get_free_filesystem() {
     return 0;
 }
 
-void fs_insert_filesystem(struct filesystem* filesystem) {
+void fs_insert_filesystem(struct filesystem* filesystem)
+{
     struct filesystem** fs;
     fs = fs_get_free_filesystem();
     if (!fs)
@@ -37,21 +39,25 @@ void fs_insert_filesystem(struct filesystem* filesystem) {
     *fs = filesystem;
 }
 
-static void fs_static_load() {
+static void fs_static_load()
+{
     fs_insert_filesystem(fat16_init());
 }
 
-void fs_load() {
+void fs_load()
+{
     memset(filesystems, 0, sizeof(filesystems));
     fs_static_load();
 }
 
-void fs_init() {
+void fs_init()
+{
     memset(file_descriptors, 0, sizeof(file_descriptors));
     fs_load();
 }
 
-static int file_new_descriptor(struct file_descriptor** desc_out) {
+static int file_new_descriptor(struct file_descriptor** desc_out)
+{
     int res = -ENOMEM;
     for (int i = 0; i < PINEOS_MAX_FILE_DESCRIPTORS; i++)
     {
@@ -70,7 +76,8 @@ static int file_new_descriptor(struct file_descriptor** desc_out) {
     return res;
 }
 
-static struct file_descriptor* file_get_descriptor(int fd) {
+static struct file_descriptor* file_get_descriptor(int fd)
+{
     if (fd <= 0 || fd >= PINEOS_MAX_FILE_DESCRIPTORS)
     {
         return 0;
@@ -81,7 +88,8 @@ static struct file_descriptor* file_get_descriptor(int fd) {
     return file_descriptors[index];
 }
 
-struct filesystem* fs_resolve(struct disk* disk) {
+struct filesystem* fs_resolve(struct disk* disk)
+{
     struct filesystem* fs = 0;
     for (int i = 0; i < PINEOS_MAX_FILESYSTEMS; i++)
     {
@@ -117,21 +125,20 @@ int fopen(const char* filename, const char* mode_str)
 {
     int res = 0;
     struct path_root* root_path = pathparser_parse(filename, NULL);
-
     if (!root_path)
     {
         res = -EINVARG;
         goto out;
     }
 
-    // We cannot have just a root path 0:/, need something like 0:/test.txt
+    // We cannot have just a root path 0:/ 0:/test.txt
     if (!root_path->first)
     {
         res = -EINVARG;
         goto out;
     }
 
-    // Ensure the disk we are reading from drive that exists
+    // Ensure the disk we are reading from exists
     struct disk* disk = disk_get(root_path->drive_no);
     if (!disk)
     {
@@ -139,7 +146,6 @@ int fopen(const char* filename, const char* mode_str)
         goto out;
     }
 
-    // We need to ensure the filesystem
     if (!disk->filesystem)
     {
         res = -EIO;
@@ -179,6 +185,20 @@ out:
     return res;
 }
 
+int fstat(int fd, struct file_stat* stat)
+{
+    int res = 0;
+    struct file_descriptor* desc = file_get_descriptor(fd);
+    if (!desc)
+    {
+        res = -EIO;
+        goto out;
+    }
+
+    res = desc->filesystem->stat(desc->disk, desc->private, stat);
+out:
+    return res;
+}
 
 int fseek(int fd, int offset, FILE_SEEK_MODE whence)
 {
@@ -194,7 +214,6 @@ int fseek(int fd, int offset, FILE_SEEK_MODE whence)
 out:
     return res;
 }
-
 int fread(void* ptr, uint32_t size, uint32_t nmemb, int fd)
 {
     int res = 0;
