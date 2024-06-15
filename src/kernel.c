@@ -8,7 +8,8 @@
 #include "disk/disk.h"
 #include "fs/pparser.h"
 #include "disk/streamer.h"
-
+#include "string/string.h"
+#include "fs/filesystem.h"
 
 struct paging_4gb_chunk* kernel_chunk = 0;
 
@@ -18,6 +19,9 @@ void kernel_main() {
 	// Initialize the heap
 	kheap_init();
 
+	// Initialize file system
+	fs_init();
+	
 	// Search and Initialize disk
 	disk_search_and_init();
 
@@ -70,6 +74,14 @@ void kernel_main() {
 	diskstreamer_read(stream, &c, 1);
 	print_uint((uint32_t)c);
 	print_char('\n');
+
+	char buffer[20];
+	strcpy(buffer, "hello");
+	print(buffer);
+	print_char('\n');
+
+	// Loop to stop further execution
+	while(1) {}
 
 	struct path_root* root_path = pathparser_parse("0:/bin/shell.exe", NULL);
 	if (root_path) {
