@@ -65,8 +65,21 @@ void kernel_main() {
 
 	// Test Code:
 	// Kept here to test the working of the code.
+
+	
 	print_char('\n');
 	print("Test Results:\n");
+
+	char* filename = "0:/hello1.txt";
+    int fd = fopen(filename, "r");
+    if (fd) {
+        printf("We opened '%s'\n", filename);
+    } else {
+		printf("We could not open '%s'\n", filename);
+	}
+	
+	// Loop to stop further execution
+	while(1) {}
 
 	struct disk_stream* stream = diskstreamer_new(0);
 	diskstreamer_seek(stream, 0x201);
@@ -80,8 +93,7 @@ void kernel_main() {
 	print(buffer);
 	print_char('\n');
 
-	// Loop to stop further execution
-	while(1) {}
+
 
 	struct path_root* root_path = pathparser_parse("0:/bin/shell.exe", NULL);
 	if (root_path) {

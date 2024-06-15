@@ -14,4 +14,7 @@
 
 #define PINEOS_SECTOR_SIZE          512
 
+
+#define PINEOS_MAX_PATH               108
+
 #endif /* CONFIG_H */
