@@ -10,8 +10,14 @@ typedef unsigned int PINEOS_DISK_TYPE;
 struct disk {
     PINEOS_DISK_TYPE type;
     int sector_size;
+    
+    // The id of the disk
+    int id;
 
     struct filesystem* filesystem;
+
+    // The private data of our filesystem
+    void* fs_private;
 };
 
 int disk_read_sector(int lba, int total, void* buf);
