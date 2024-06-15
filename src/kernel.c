@@ -21,7 +21,7 @@ void kernel_main() {
 
 	// Initialize file system
 	fs_init();
-	
+
 	// Search and Initialize disk
 	disk_search_and_init();
 

@@ -1,6 +1,8 @@
 #ifndef DISK_H
 #define DISK_H
 
+#include "fs/filesystem.h"
+
 typedef unsigned int PINEOS_DISK_TYPE;
 
 #define PINEOS_DISK_TYPE_REAL 0
@@ -8,6 +10,8 @@ typedef unsigned int PINEOS_DISK_TYPE;
 struct disk {
     PINEOS_DISK_TYPE type;
     int sector_size;
+
+    struct filesystem* filesystem;
 };
 
 int disk_read_sector(int lba, int total, void* buf);
