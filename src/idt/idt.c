@@ -53,5 +53,5 @@ void idt_init() {
 	// Load the IDT 
 	idt_load(&idtr_descriptor);
 
-	print("IDT Initized.\n");
+	// print("IDT Initized.\n");
 }
