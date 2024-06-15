@@ -7,7 +7,7 @@ LD := ${PRE}i686-elf-ld
 GCC := ${PRE}i686-elf-gcc
 GDB := ${PRE}i686-elf-gdb
 
-all: ./bin/boot.bin ./bin/kernel.bin 
+all: ./bin/boot.bin ./bin/kernel.bin user_programs
 	rm -rf ./bin/os.bin 
 	dd if=./bin/boot.bin >> ./bin/os.bin
 	dd if=./bin/kernel.bin >> ./bin/os.bin
@@ -88,17 +88,23 @@ all: ./bin/boot.bin ./bin/kernel.bin
 	nasm -f elf -g ./src/task/task.asm -o ./build/task/task.asm.o
 
 ./build/task/task.o: ./src/task/task.c
-	${GCC} ${INCLUDES} ${FLAGS} -std=gnu99 -c ./src/task/task.asm -o ./build/task/task.o
+	${GCC} ${INCLUDES} ${FLAGS} -std=gnu99 -c ./src/task/task.c -o ./build/task/task.o
 
 ./build/task/process.o: ./src/task/process.c
 	${GCC} ${INCLUDES} ${FLAGS} -std=gnu99 -c ./src/task/process.c -o ./build/task/process.o
 
-clean:
+clean: user_programs_clean
 	rm -rf ./bin/boot.bin
 	rm -rf ./bin/kernel.bin
 	rm -rf ./bin/os.bin
 	rm -rf ${FILES}
 	rm -rf kernelfull.o
+
+user_programs:
+	cd ./programs/blank && $(MAKE) all
+
+user_programs_clean:
+	cd ./programs/blank && $(MAKE) clean
 
 show:
 	@echo "PRE=${PRE}"
