@@ -70,10 +70,14 @@ void kernel_main() {
 	print_char('\n');
 	print("Test Results:\n");
 
-	char* filename = "0:/hello1.txt";
+	char* filename = "0:/hello.txt";
     int fd = fopen(filename, "r");
     if (fd) {
         printf("We opened '%s'\n", filename);
+
+		char fbuf1[16];
+		fread(fbuf1, 16, 1, fd);
+		print(fbuf1);
     } else {
 		printf("We could not open '%s'\n", filename);
 	}
