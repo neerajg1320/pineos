@@ -25,6 +25,12 @@ void panic(const char* msg) {
     while(1) {}
 }
 
+void kernel_page()
+{
+    kernel_registers();
+    paging_switch(kernel_chunk);
+}
+
 // struct tss tss;
 
 // struct gdt gdt_real[PINEOS_TOTAL_GDT_SEGMENTS];
@@ -48,6 +54,8 @@ struct gdt_structured gdt_structured[PINEOS_TOTAL_GDT_SEGMENTS] = {
     {.base = 0x00, .limit = 0xffffffff, .type = 0xf2},             // User data segment
     {.base = (uint32_t)&tss, .limit=sizeof(tss), .type = 0xE9}      // TSS Segment
 };
+
+
 void kernel_main()
 {
     terminal_initialize();

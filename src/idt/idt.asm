@@ -2,46 +2,74 @@ section .asm
 
 extern int21h_handler
 extern no_interrupt_handler
+extern isr80h_handler
 
-global idt_load
 global int21h
+global idt_load
 global no_interrupt
 global enable_interrupts
 global disable_interrupts
+global isr80h_wrapper
 
 enable_interrupts:
-	sti
-	ret
+    sti
+    ret
 
 disable_interrupts:
-	cli
-	ret
+    cli
+    ret
+
 
 idt_load:
-	push ebp
-	mov ebp, esp
-	
-	mov ebx, [ebp+8] ; ebp points to base, ebp+4 points to return stack of caller, ebp+8 points to first arg
+    push ebp
+    mov ebp, esp
 
-	lidt[ebx]  ; load IDT
+    mov ebx, [ebp+8]
+    lidt [ebx]
+    pop ebp    
+    ret
 
-	pop ebp
-	ret
 
 int21h:
-	cli
-	pushad ; pushes all General Purpose registers
-	call int21h_handler
-	popad ; pops all GP registers
-	sti
-
-	iret ; interrupt return
+    pushad
+    call int21h_handler
+    popad
+    iret
 
 no_interrupt:
-	cli
-	pushad ; pushes all General Purpose registers
-	call no_interrupt_handler
-	popad ; pops all GP registers
-	sti
+    pushad
+    call no_interrupt_handler
+    popad
+    iret
 
-	iret ; interrupt return
+isr80h_wrapper:
+    ; INTERRUPT FRAME START
+    ; ALREADY PUSHED TO US BY THE PROCESSOR UPON ENTRY TO THIS INTERRUPT
+    ; uint32_t ip
+    ; uint32_t cs;
+    ; uint32_t flags
+    ; uint32_t sp;
+    ; uint32_t ss;
+    ; Pushes the general purpose registers to the stack
+    pushad
+    
+    ; INTERRUPT FRAME END
+
+    ; Push the stack pointer so that we are pointing to the interrupt frame
+    push esp
+
+    ; EAX holds our command lets push it to the stack for isr80h_handler
+    push eax
+    call isr80h_handler
+    mov dword[tmp_res], eax
+    
+	add esp, 8 ; we offset two immediate pushes above, required for popad below 
+
+    ; Restore general purpose registers for user land
+    popad
+    mov eax, [tmp_res]
+    iretd
+
+section .data
+; Inside here is stored the return result from isr80h_handler
+tmp_res: dd 0

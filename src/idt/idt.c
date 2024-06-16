@@ -4,6 +4,8 @@
 #include "memory/memory.h"
 #include "terminal/print.h"
 #include "io/io.h"
+#include "kernel.h"
+#include "task/task.h"
 
 struct idt_desc  idt_descriptors[PINEOS_TOTAL_INTERRUPTS];
 struct idtr_desc idtr_descriptor;
@@ -54,4 +56,21 @@ void idt_init() {
 	idt_load(&idtr_descriptor);
 
 	// print("IDT Initized.\n");
+}
+
+void* isr80h_handle_command(int command, struct interrupt_frame* frame)
+{
+	return (void*)0;
+}
+
+void* isr80h_handler(int command, struct interrupt_frame* frame)
+{
+    void* res = 0;
+    kernel_page();
+
+    task_current_save_state(frame);
+    res = isr80h_handle_command(command, frame);
+    
+	task_page();
+    return res;
 }
