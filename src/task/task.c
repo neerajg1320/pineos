@@ -4,6 +4,7 @@
 #include "memory/heap/kheap.h"
 #include "memory/memory.h"
 #include "task/process.h"
+#include "terminal/print.h"
 
 // The current task that is running
 struct task* current_task = 0;
@@ -105,6 +106,7 @@ int task_switch(struct task* task)
 {
     current_task = task;
     paging_switch(task->page_directory->directory_entry);
+    printf("task_switch(): task:%p\n", task);
     return 0;
 }
 
@@ -139,7 +141,7 @@ int task_init(struct task* task, struct process* process)
 
     task->registers.ip = PINEOS_PROGRAM_VIRTUAL_ADDRESS;
     task->registers.ss = USER_DATA_SEGMENT;
-    task->registers.ss = USER_CODE_SEGMENT;
+    task->registers.cs = USER_CODE_SEGMENT;
     task->registers.esp = PINEOS_PROGRAM_VIRTUAL_STACK_ADDRESS_START;
 
     return 0;

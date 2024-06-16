@@ -2,6 +2,7 @@
 #include "status.h"
 #include "paging.h"
 #include "memory/heap/kheap.h"
+#include "terminal/print.h"
 
 static uint32_t* current_directory = 0;
 
@@ -30,6 +31,7 @@ struct paging_4gb_chunk* paging_new_4gb(uint8_t flags) {
 void paging_switch(uint32_t* directory) {
     paging_load_directory(directory);
     current_directory = directory;
+    printf("paging_switch(): directory:%p\n", directory);
 }
 
 void paging_free_4gb(struct paging_4gb_chunk* chunk)
