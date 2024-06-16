@@ -2,6 +2,9 @@
 #define IDT_H
 #include <stdint.h>
 
+struct interrupt_frame;
+typedef void* (*ISR80H_COMMAND)(struct interrupt_frame* frame);
+
 struct idt_desc {
 	uint16_t offset_1;  // Offset bits 0 - 15
 	uint16_t selector;  // Seclector thats in our GDT
@@ -35,5 +38,9 @@ struct interrupt_frame
 void idt_init();
 void enable_interrupts();
 void disable_interrupts();
+
+void isr80h_register_command(int command_id, ISR80H_COMMAND command);
+void* isr80h_handle_command(int command, struct interrupt_frame* frame);
+void* isr80h_handler(int command, struct interrupt_frame* frame);
 
 #endif

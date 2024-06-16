@@ -28,4 +28,7 @@
 #define USER_DATA_SEGMENT  0x23     // Offset in the real GDT table
 #define USER_CODE_SEGMENT  0x1B     // Offset in the real GDT table
 
+
+#define PINEOS_MAX_ISR80H_COMMANDS 		1024
+
 #endif /* CONFIG_H */
